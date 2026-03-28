@@ -99,8 +99,6 @@ The dataset includes transaction-level features (amount, product code, card deta
 
 ## ⚙️ Feature Engineering
 
-The pipeline (`pipeline.py`) applies the following transformations:
-
 | Stage | Description |
 | :--- | :--- |
 | **Temporal** | Extract `hour`, `day`, `weekday` from `TransactionDT` |
