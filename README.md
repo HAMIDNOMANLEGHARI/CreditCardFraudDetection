@@ -1,8 +1,4 @@
 
-
-````markdown
-<div align="center">
-
 # 🔍 Advanced Credit Card Fraud Detection
 
 **An end-to-end machine learning pipeline for real-time credit card fraud detection using XGBoost, deployed with a Streamlit web application.**
@@ -269,10 +265,3 @@ The model demonstrates strong discriminative ability on the validation set:
 \<div align="center"\>
 
 ⭐ **If you found this project useful, please consider giving it a star\!** ⭐
-
-\</div\>
-
-
-
-Would you like me to generate that standard `LICENSE` file text for you to copy and paste into your repo?
-```
