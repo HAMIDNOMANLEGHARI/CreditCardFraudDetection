@@ -1,4 +1,7 @@
-<![CDATA[<div align="center">
+
+
+````markdown
+<div align="center">
 
 # 🔍 Advanced Credit Card Fraud Detection
 
@@ -43,15 +46,15 @@ The system features:
 
 ## 🏗 Project Architecture
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
-│                    Raw IEEE-CIS Data                     │
-│           (Transaction + Identity Tables)                │
+│                    Raw IEEE-CIS Data                    │
+│           (Transaction + Identity Tables)               │
 └──────────────────────┬──────────────────────────────────┘
                        │
                        ▼
 ┌─────────────────────────────────────────────────────────┐
-│              Feature Engineering Pipeline                │
+│              Feature Engineering Pipeline               │
 │  • Temporal features (hour, day, weekday)               │
 │  • Transaction velocity (time_diff)                     │
 │  • Card-level aggregations (count, mean, std)           │
@@ -63,7 +66,7 @@ The system features:
                        │
                        ▼
 ┌─────────────────────────────────────────────────────────┐
-│                   XGBoost Classifier                     │
+│                  XGBoost Classifier                     │
 │  • 5,000 estimators (early stopped at ~1,745)           │
 │  • max_depth=40, learning_rate=0.008                    │
 │  • scale_pos_weight for class imbalance                 │
@@ -72,53 +75,53 @@ The system features:
                        │
                        ▼
 ┌─────────────────────────────────────────────────────────┐
-│                  Streamlit Web App                        │
+│                  Streamlit Web App                      │
 │  • CSV upload → preprocessing → prediction              │
 │  • Fraud probability scores + binary predictions        │
 │  • Interactive data exploration                         │
 └─────────────────────────────────────────────────────────┘
-```
+````
 
----
+-----
 
 ## 📊 Dataset
 
 This project uses the [IEEE-CIS Fraud Detection](https://www.kaggle.com/c/ieee-fraud-detection) dataset from Kaggle.
 
 | Property | Value |
-|:--|:--|
+| :--- | :--- |
 | **Total Transactions** | 590,540 |
 | **Features** | 434 (after merging transaction + identity tables) |
-| **Fraudulent (isFraud=1)** | ~3.5% (20,663 cases) |
-| **Legitimate (isFraud=0)** | ~96.5% (569,877 cases) |
-| **Training Subset** | 25% stratified sample (~147,635 rows) |
+| **Fraudulent (isFraud=1)** | \~3.5% (20,663 cases) |
+| **Legitimate (isFraud=0)** | \~96.5% (569,877 cases) |
+| **Training Subset** | 25% stratified sample (\~147,635 rows) |
 
 The dataset includes transaction-level features (amount, product code, card details, address, email domain), Vesta-engineered features (V1–V339), and identity-linked features (device type, browser, screen resolution, OS).
 
----
+-----
 
 ## ⚙️ Feature Engineering
 
 The pipeline (`pipeline.py`) applies the following transformations:
 
 | Stage | Description |
-|:--|:--|
+| :--- | :--- |
 | **Temporal** | Extract `hour`, `day`, `weekday` from `TransactionDT` |
 | **Velocity** | Compute `time_diff` — seconds between consecutive transactions per card |
 | **Card Aggregations** | Per-card `count`, `mean`, `std` of `TransactionAmt` for `card1` and `card2` |
 | **User ID (UID)** | Construct `card1 + addr1 + P_emaildomain` composite key → aggregate stats |
-| **Device/Browser** | Parse `id_33` (screen resolution) into width/height; normalize `id_31` to major browser families |
-| **Missing Values** | Numeric → `-999`; Categorical → `"missing"` |
+| **Device/Browser**| Parse `id_33` (screen resolution) into width/height; normalize `id_31` to major browser families |
+| **Missing Values**| Numeric → `-999`; Categorical → `"missing"` |
 | **Encoding** | Low-cardinality (≤10 unique) → one-hot encoding; High-cardinality → frequency encoding |
 
----
+-----
 
 ## 📈 Model Performance
 
 The XGBoost model was trained with **class-weight balancing** (`scale_pos_weight`) and **early stopping** (50 rounds patience), evaluated on a time-based 80/20 split:
 
 | Metric | Score |
-|:--|:--|
+| :--- | :--- |
 | **ROC-AUC** | **0.9342** |
 | **Recall** | **0.8917** (89.17%) |
 | **Classification Threshold** | 0.0028 (optimized for high recall) |
@@ -141,12 +144,12 @@ XGBClassifier(
 
 > **Note:** The model uses a very low threshold (0.0028) instead of the default 0.5, prioritizing **recall** (catching fraud) over precision — a common strategy in fraud detection where missing a fraudulent transaction is far more costly than reviewing a false positive.
 
----
+-----
 
 ## 🛠 Tech Stack
 
 | Component | Technology |
-|:--|:--|
+| :--- | :--- |
 | **Language** | Python 3.10+ |
 | **ML Framework** | XGBoost 3.2 |
 | **Data Processing** | Pandas, NumPy |
@@ -155,11 +158,11 @@ XGBClassifier(
 | **Web App** | Streamlit |
 | **Notebook Environment** | Google Colab (TPU-accelerated) |
 
----
+-----
 
 ## 📁 Project Structure
 
-```
+```text
 CreditCardFraudDetection/
 ├── README.md
 └── HamidNomanLeghari_Capstone_Project/
@@ -171,84 +174,89 @@ CreditCardFraudDetection/
         └── xgb_model.json      # Trained XGBoost model (~555 MB)
 ```
 
----
+-----
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Python 3.10 or higher
-- pip package manager
+  - Python 3.10 or higher
+  - pip package manager
 
 ### Installation
 
-1. **Clone the repository:**
+1.  **Clone the repository:**
+
+<!-- end list -->
 
 ```bash
-git clone https://github.com/HAMIDNOMANLEGHARI/CreditCardFraudDetection.git
+git clone [https://github.com/HAMIDNOMANLEGHARI/CreditCardFraudDetection.git](https://github.com/HAMIDNOMANLEGHARI/CreditCardFraudDetection.git)
 cd CreditCardFraudDetection
 ```
 
-2. **Install dependencies:**
+2.  **Install dependencies:**
+
+<!-- end list -->
 
 ```bash
 pip install streamlit pandas numpy xgboost scikit-learn matplotlib
 ```
 
-3. **Navigate to the app directory:**
+3.  **Navigate to the app directory:**
+
+<!-- end list -->
 
 ```bash
 cd HamidNomanLeghari_Capstone_Project/CreditCardFraudDetection_App
 ```
 
-4. **Run the Streamlit app:**
+4.  **Run the Streamlit app:**
+
+<!-- end list -->
 
 ```bash
 streamlit run app.py
 ```
 
-5. **Open your browser** at `http://localhost:8501`
+5.  **Open your browser** at `http://localhost:8501`
 
-> **Note:** The trained model file (`xgb_model.json`) is ~555 MB. If using Git LFS, make sure to pull LFS objects after cloning. Alternatively, retrain the model using the provided notebook.
+> **Note:** The trained model file (`xgb_model.json`) is \~555 MB. If using Git LFS, make sure to pull LFS objects after cloning. Alternatively, retrain the model using the provided notebook.
 
----
+-----
 
 ## 💡 Usage
 
-1. **Prepare your data** — ensure your CSV follows the IEEE-CIS transaction format with columns like `TransactionDT`, `TransactionAmt`, `card1`, `card2`, `ProductCD`, etc.
+1.  **Prepare your data** — ensure your CSV follows the IEEE-CIS transaction format with columns like `TransactionDT`, `TransactionAmt`, `card1`, `card2`, `ProductCD`, etc.
+2.  **Upload via the web app** — drag and drop your CSV file into the Streamlit interface.
+3.  **View results** — the app runs the full feature engineering pipeline and returns:
+      - **Fraud\_Prediction** — binary label (0 = legitimate, 1 = fraud)
+      - **Fraud\_Probability** — model confidence score (0.0 – 1.0)
+4.  **Review flagged transactions** — the app highlights the total count of detected fraudulent transactions for quick triage.
 
-2. **Upload via the web app** — drag and drop your CSV file into the Streamlit interface.
-
-3. **View results** — the app runs the full feature engineering pipeline and returns:
-   - **Fraud_Prediction** — binary label (0 = legitimate, 1 = fraud)
-   - **Fraud_Probability** — model confidence score (0.0 – 1.0)
-
-4. **Review flagged transactions** — the app highlights the total count of detected fraudulent transactions for quick triage.
-
----
+-----
 
 ## 📊 Results & Visualizations
 
 The model demonstrates strong discriminative ability on the validation set:
 
-- **Confusion Matrix** — shows the trade-off between catching fraud (high recall) and false positives
-- **Normalized Confusion Matrix** — percentage-based view for class-imbalanced evaluation
-- **AUC Training Curve** — validation AUC steadily improves from 0.84 → 0.93 over ~1,745 boosting rounds
+  - **Confusion Matrix** — shows the trade-off between catching fraud (high recall) and false positives.
+  - **Normalized Confusion Matrix** — percentage-based view for class-imbalanced evaluation.
+  - **AUC Training Curve** — validation AUC steadily improves from 0.84 → 0.93 over \~1,745 boosting rounds.
 
-> Full visualizations and EDA are available in the [Jupyter notebook](HamidNomanLeghari_Capstone_Project/AdvanceCreditCardFraudDetection_notebook_HLeghari.ipynb).
+> Full visualizations and EDA are available in the [Jupyter notebook](https://www.google.com/search?q=HamidNomanLeghari_Capstone_Project/AdvanceCreditCardFraudDetection_notebook_HLeghari.ipynb).
 
----
+-----
 
 ## 🔮 Future Improvements
 
-- [ ] **Threshold optimization** — systematic F1/F-beta threshold tuning via precision-recall curves
-- [ ] **Feature selection** — SHAP-based feature importance analysis to reduce the 535-dimensional feature space
-- [ ] **Ensemble methods** — combine XGBoost with LightGBM and CatBoost for a stacking ensemble
-- [ ] **Real-time streaming** — integrate with Apache Kafka for live transaction scoring
-- [ ] **Model monitoring** — add drift detection for production deployment
-- [ ] **API deployment** — wrap the model in a FastAPI/Flask REST endpoint for microservice integration
+  - [ ] **Threshold optimization** — systematic F1/F-beta threshold tuning via precision-recall curves.
+  - [ ] **Feature selection** — SHAP-based feature importance analysis to reduce the 535-dimensional feature space.
+  - [ ] **Ensemble methods** — combine XGBoost with LightGBM and CatBoost for a stacking ensemble.
+  - [ ] **Real-time streaming** — integrate with Apache Kafka for live transaction scoring.
+  - [ ] **Model monitoring** — add drift detection for production deployment.
+  - [ ] **API deployment** — wrap the model in a FastAPI/Flask REST endpoint for microservice integration.
 
----
+-----
 
 ## 👤 Author
 
@@ -256,11 +264,15 @@ The model demonstrates strong discriminative ability on the validation set:
 
 > Capstone Project — Advanced Credit Card Fraud Detection
 
----
+-----
 
-<div align="center">
+\<div align="center"\>
 
-⭐ **If you found this project useful, please consider giving it a star!** ⭐
+⭐ **If you found this project useful, please consider giving it a star\!** ⭐
 
-</div>
-]]>
+\</div\>
+
+
+
+Would you like me to generate that standard `LICENSE` file text for you to copy and paste into your repo?
+```
