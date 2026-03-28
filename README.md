@@ -267,6 +267,4 @@ The model demonstrates strong discriminative ability on the validation set:
 
 ⭐ **If you found this project useful, please consider giving it a star\!** ⭐
 
-\</div\>
 
-```
